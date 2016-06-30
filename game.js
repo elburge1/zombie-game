@@ -1,4 +1,7 @@
-var game = new Phaser.Game(1000, 600, Phaser.AUTO, 'gameboard', {preload: preload, create: create, update: update});
+var game = new Phaser.Game(1000, 600, Phaser.AUTO, 'gameboard',       {
+  preload: preload,
+  create: create,
+  update: update });
 
 function preload(){
   game.load.image('sky', 'assets/sky.png');
@@ -20,6 +23,8 @@ function create(){
 }
 
 function update() {
+
+  player.body.velocity.x = 0;
 
   if (cursors.left.isDown){
     player.body.velocity.x = -150;
