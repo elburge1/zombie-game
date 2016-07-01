@@ -16,9 +16,14 @@ function create(){
 
   game.add.sprite(0, 0, 'sky');
 
-  game.add.sprite(32, game.world.height - 64, 'dude');
+  player = game.add.sprite(32, game.world.height - 64, 'dude');
 
+  game.physics.arcade.enable(player);
+
+  player.body.bounce.y = 0.1;
   player.body.collideWorldBounds = true;
+
+  cursors = game.input.keyboard.createCursorKeys();
 
 }
 
@@ -30,6 +35,10 @@ function update() {
     player.body.velocity.x = -150;
   } else if (cursors.right.isDown){
     player.body.velocity.x = 150;
+  } else if (cursors.up.isDown) {
+    player.body.velocity.y = 150;
+  } else if (cursors.down.isDown){
+    player.body.velocity.y = -150;
   } else {
     player.animations.stop();
   }
