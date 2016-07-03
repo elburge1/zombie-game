@@ -15,28 +15,20 @@ var platforms;
 
 function create(){
   game.physics.startSystem(Phaser.Physics.ARCADE);
-
   game.add.sprite(0, 0, 'sky');
-
   player = game.add.sprite(32, game.world.height - 64, 'dude');
-
-  enemy = game.add.sprite(100, game.world.height - 64, 'baddie')
-
+  enemy = game.add.sprite(200, game.world.height - 64, 'baddie');
   game.physics.arcade.enable(player);
-
+  game.physics.arcade.enable(enemy);
   player.body.collideWorldBounds = true;
-
+  enemy.body.collideWorldBounds = true;
   cursors = game.input.keyboard.createCursorKeys();
-
 }
 
 function update() {
-
   game.physics.arcade.collide(player, enemy);
-
   player.body.velocity.x = 0;
   player.body.velocity.y = 0;
-
   if (cursors.left.isDown){
     player.body.velocity.x = -150;
   } else if (cursors.right.isDown){
