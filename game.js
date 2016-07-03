@@ -10,23 +10,29 @@ function preload(){
 }
 
 var player;
-var enemy;
+var playerMaxHealth = 100;
+
+var smallEnemy;
+var smallEnemyMaxHealth = 10;
+
 var platforms;
 
 function create(){
   game.physics.startSystem(Phaser.Physics.ARCADE);
   game.add.sprite(0, 0, 'sky');
   player = game.add.sprite(32, game.world.height - 64, 'dude');
-  enemy = game.add.sprite(200, game.world.height - 64, 'baddie');
+  smallEnemy = game.add.sprite(400, game.world.height - 64, 'baddie');
   game.physics.arcade.enable(player);
-  game.physics.arcade.enable(enemy);
+  game.physics.arcade.enable(smallEnemy);
   player.body.collideWorldBounds = true;
-  enemy.body.collideWorldBounds = true;
+  smallEnemy.body.collideWorldBounds = true;
   cursors = game.input.keyboard.createCursorKeys();
 }
 
 function update() {
-  game.physics.arcade.collide(player, enemy);
+  game.physics.arcade.collide(player, smallEnemy);
+  smallEnemy.body.velocity.x = 0;
+  smallEnemy.body.velocity.y = 0;
   player.body.velocity.x = 0;
   player.body.velocity.y = 0;
   if (cursors.left.isDown){
@@ -40,4 +46,6 @@ function update() {
   } else {
     player.animations.stop();
   }
+
+  game.physics.arcade.moveToObject(smallEnemy, player, 100);
 }
