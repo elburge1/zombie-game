@@ -14,6 +14,7 @@ var playerMaxHealth = 100;
 
 var smallEnemy;
 var smallEnemyMaxHealth = 10;
+var smallEnemyDamage = 2;
 
 var platforms;
 
@@ -21,7 +22,9 @@ function create(){
   game.physics.startSystem(Phaser.Physics.ARCADE);
   game.add.sprite(0, 0, 'sky');
   player = game.add.sprite(32, game.world.height - 64, 'dude');
+  player.health = playerMaxHealth;
   smallEnemy = game.add.sprite(400, game.world.height - 64, 'baddie');
+  smallEnemy.damage = smallEnemyDamage;
   game.physics.arcade.enable(player);
   game.physics.arcade.enable(smallEnemy);
   player.body.collideWorldBounds = true;
@@ -30,6 +33,9 @@ function create(){
 }
 
 function update() {
+  game.physics.arcade.overlap(smallEnemy, player, damage, null, this);
+
+  //allows player and enemy to collide
   game.physics.arcade.collide(player, smallEnemy);
   smallEnemy.body.velocity.x = 0;
   smallEnemy.body.velocity.y = 0;
@@ -47,5 +53,14 @@ function update() {
     player.animations.stop();
   }
 
+  //causes enemy to chase player;
   game.physics.arcade.moveToObject(smallEnemy, player, 100);
+}
+
+function damage(player){
+  player.health - smallEnemy.damage;
+  console.log(player.health);
+  if (player.health <= 0){
+    player.kill();
+  }
 }
