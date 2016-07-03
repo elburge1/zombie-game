@@ -57,10 +57,11 @@ function update() {
   game.physics.arcade.moveToObject(smallEnemy, player, 100);
 }
 
-function damage(player){
-  player.health - smallEnemy.damage;
-  console.log(player.health);
-  if (player.health <= 0){
+function damage(enemy, player){
+  if (player.health < 1){
     player.kill();
+  } else {
+    player.health -= enemy.damage;
+    console.log(player.health);
   }
 }
