@@ -113,7 +113,8 @@ function damage(attack, target){
 
 function pewPew(enemy, attack){
   enemy.health -= attack.damage;
+  attack.kill();
   if (enemy.health < 1){
-    enemy.kill;
+    enemy.kill();
   }
 }
