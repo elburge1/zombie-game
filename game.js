@@ -86,7 +86,7 @@ function update() {
   }
 
   //causes enemy to chase player;
-  // game.physics.arcade.moveToObject(smallEnemy, player, 100);
+  game.physics.arcade.moveToObject(smallEnemy, player, 100);
 }
 
 function fire(){
