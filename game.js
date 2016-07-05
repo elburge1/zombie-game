@@ -1,10 +1,10 @@
-var game = new Phaser.Game(1000, 800, Phaser.AUTO, 'gameboard',       {
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'gameboard',       {
   preload: preload,
   create: create,
   update: update });
 
 function preload(){
-  game.load.image('sky', 'assets/sky.png');
+  game.load.image('mars', 'assets/mars.jpg');
   game.load.spritesheet('robot', 'assets/robot.png', 30, 30);
   game.load.spritesheet('zombie', 'assets/spacezombie.png', 30, 30);
   game.load.spritesheet('laser', 'assets/beams.png', 20, 30);
@@ -26,9 +26,13 @@ var platforms;
 
 var lasers;
 
+var score = 0;
+var scoreText;
+var introText;
+
 function create(){
   game.physics.startSystem(Phaser.Physics.ARCADE);
-  game.add.sprite(0, 0, 'sky');
+  game.add.sprite(0, 0, 'mars');
 
   walkUp = game.input.keyboard.addKey(Phaser.Keyboard.W);
   walkRight = game.input.keyboard.addKey(Phaser.Keyboard.D);
@@ -59,6 +63,11 @@ function create(){
   lasers.setAll('checkWorldBounds', true);
   lasers.setAll('outOfBoundsKill', true);
 
+  scoreText = game.add.text(32, 550, 'score: 0', {font:"20px Arial", fill: "#ffffff", align: 'left'});
+  introText = game.add.text(100, 100, 'WTF ZOMBIES?!?!?!', {font:"20px Arial", fill: "#ffffff", align: "left"});
+
+  introText.anchor.setTo(0.5, 0.5);
+
 }
 
 function update() {
@@ -84,7 +93,6 @@ function update() {
     player.animations.stop();
   }
 
-  // player.rotation = game.physics.arcade.angleToPointer(player);
 
   if (game.input.activePointer.isDown){
     fire();
@@ -113,6 +121,8 @@ function damage(attack, target){
     target.kill();
   } else {
     target.health -= attack.damage;
+    introText.text = 'YOU LOSE!';
+    introText.visible = true;
   }
 }
 
@@ -121,5 +131,7 @@ function pewPew(enemy, attack){
   attack.kill();
   if (enemy.health < 1){
     enemy.kill();
+    score += 1;
+    scoreText.text = 'score: ' + score;
   }
 }
