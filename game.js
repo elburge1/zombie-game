@@ -1,13 +1,13 @@
-var game = new Phaser.Game(1000, 600, Phaser.AUTO, 'gameboard',       {
+var game = new Phaser.Game(1000, 800, Phaser.AUTO, 'gameboard',       {
   preload: preload,
   create: create,
   update: update });
 
 function preload(){
   game.load.image('sky', 'assets/sky.png');
-  game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+  game.load.spritesheet('robot', 'assets/robot.png', 30, 30);
   game.load.spritesheet('baddie', 'assets/baddie.png', 20, 32);
-  game.load.spritesheet('laser', 'assets/beams.png', 100, 100);
+  game.load.spritesheet('laser', 'assets/beams.png', 20, 30);
 }
 
 var player;
@@ -35,7 +35,7 @@ function create(){
   walkLeft = game.input.keyboard.addKey(Phaser.Keyboard.A);
   walkDown = game.input.keyboard.addKey(Phaser.Keyboard.S);
 
-  player = game.add.sprite(32, game.world.height - 64, 'dude');
+  player = game.add.sprite(32, game.world.height - 64, 'robot');
   player.health = playerMaxHealth;
   player.anchor.set(0.5);
 
