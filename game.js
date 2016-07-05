@@ -6,7 +6,7 @@ var game = new Phaser.Game(1000, 800, Phaser.AUTO, 'gameboard',       {
 function preload(){
   game.load.image('sky', 'assets/sky.png');
   game.load.spritesheet('robot', 'assets/robot.png', 30, 30);
-  game.load.spritesheet('baddie', 'assets/baddie.png', 20, 32);
+  game.load.spritesheet('zombie', 'assets/spacezombie.png', 30, 30);
   game.load.spritesheet('laser', 'assets/beams.png', 20, 30);
 }
 
@@ -39,7 +39,7 @@ function create(){
   player.health = playerMaxHealth;
   player.anchor.set(0.5);
 
-  smallEnemy = game.add.sprite(400, game.world.height - 64, 'baddie');
+  smallEnemy = game.add.sprite(400, game.world.height - 64, 'zombie');
   smallEnemy.damage = smallEnemyDamage;
   smallEnemy.health = smallEnemyMaxHealth;
 
@@ -84,7 +84,7 @@ function update() {
     player.animations.stop();
   }
 
-  player.rotation = game.physics.arcade.angleToPointer(player);
+  // player.rotation = game.physics.arcade.angleToPointer(player);
 
   if (game.input.activePointer.isDown){
     fire();
