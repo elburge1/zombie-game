@@ -30,6 +30,11 @@ function create(){
   game.physics.startSystem(Phaser.Physics.ARCADE);
   game.add.sprite(0, 0, 'sky');
 
+  walkUp = game.input.keyboard.addKey(Phaser.Keyboard.W);
+  walkRight = game.input.keyboard.addKey(Phaser.Keyboard.D);
+  walkLeft = game.input.keyboard.addKey(Phaser.Keyboard.A);
+  walkDown = game.input.keyboard.addKey(Phaser.Keyboard.S);
+
   player = game.add.sprite(32, game.world.height - 64, 'dude');
   player.health = playerMaxHealth;
   player.anchor.set(0.5);
@@ -67,13 +72,13 @@ function update() {
   smallEnemy.body.velocity.y = 0;
   player.body.velocity.x = 0;
   player.body.velocity.y = 0;
-  if (cursors.left.isDown){
+  if (walkLeft.isDown){
     player.body.velocity.x = -150;
-  } else if (cursors.right.isDown){
+  } else if (walkRight.isDown){
     player.body.velocity.x = 150;
-  } else if (cursors.up.isDown) {
+  } else if (walkUp.isDown) {
     player.body.velocity.y = -150;
-  } else if (cursors.down.isDown){
+  } else if (walkDown.isDown){
     player.body.velocity.y = 150;
   } else {
     player.animations.stop();
