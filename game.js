@@ -20,7 +20,7 @@ var laserDamage = 4;
 
 var smallEnemy;
 var smallEnemyMaxHealth = 10;
-var smallEnemyDamage = 0.01;
+var smallEnemyDamage = 1;
 
 var platforms;
 
@@ -68,8 +68,8 @@ function create(){
   lasers.setAll('outOfBoundsKill', true);
 
   scoreText = game.add.text(32, 550, 'score: 0', {font:"20px Arial", fill: "#ffffff", align: 'left'});
-  introText = game.add.text(100, 100, 'Press Space to defend the homestead!', {font:"20px Arial", fill: "#ffffff", align: "left"});
-  healthText = game.add.text(200, 50, 'health: 100', {font:"20px Arial", fill: "#ffffff", align: "left"})
+  introText = game.add.text(400, 100, 'Press Space to defend the homestead!', {font:"20px Arial", fill: "#ffffff", align: "center"});
+  healthText = game.add.text(32, 50, 'health: 100', {font:"20px Arial", fill: "#ffffff", align: "left"})
 
   introText.anchor.setTo(0.5, 0.5);
 
@@ -109,9 +109,10 @@ function update() {
     fire();
   }
 
-  //causes enemy to chase player;
+  //causes enemy to chase player
 }
 
+//weapon firing function
 function fire(){
   if (game.time.now > nextFire && lasers.countDead() > 0){
     nextFire = game.time.now + fireRate;
@@ -129,14 +130,16 @@ function fire(){
 function damage(attack, target){
   if (target.health < 1){
     target.kill();
-    introText.text = 'YOU LOSE!';
+    introText.text = 'YOU LOSE! Click to play again!';
     introText.visible = true;
+    game.input.onTap.addOnce(restart, this);
   } else {
     target.health -= attack.damage;
     healthText.text = 'health: ' + target.health.toFixed(1);
   }
 }
 
+//collision handler for player attack
 function pewPew(enemy, attack){
   enemy.health -= attack.damage;
   attack.kill();
@@ -147,9 +150,15 @@ function pewPew(enemy, attack){
   }
 }
 
+//game-start function
 function zombieChase(){
   if (introText.visible == true){
     killRobot = true;
     introText.visible = false;
   }
+}
+
+function restart(){
+  killRobot = false;
+  create();
 }
