@@ -20,7 +20,7 @@ var laserDamage = 4;
 
 var smallEnemy;
 var smallEnemyMaxHealth = 10;
-var smallEnemyDamage = 2;
+var smallEnemyDamage = 0.01;
 
 var platforms;
 
@@ -29,6 +29,7 @@ var lasers;
 var score = 0;
 var scoreText;
 var introText;
+var healthText;
 
 function create(){
   game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -65,6 +66,7 @@ function create(){
 
   scoreText = game.add.text(32, 550, 'score: 0', {font:"20px Arial", fill: "#ffffff", align: 'left'});
   introText = game.add.text(100, 100, 'WTF ZOMBIES?!?!?!', {font:"20px Arial", fill: "#ffffff", align: "left"});
+  healthText = game.add.text(200, 50, 'health: 100', {font:"20px Arial", fill: "#ffffff", align: "left"})
 
   introText.anchor.setTo(0.5, 0.5);
 
@@ -119,10 +121,11 @@ function fire(){
 function damage(attack, target){
   if (target.health < 1){
     target.kill();
+    introText.text = 'YOU LOSE!';
   } else {
     target.health -= attack.damage;
-    introText.text = 'YOU LOSE!';
     introText.visible = true;
+    healthText.text = 'health: ' + target.health.toFixed(1);
   }
 }
 
