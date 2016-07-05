@@ -31,6 +31,8 @@ var scoreText;
 var introText;
 var healthText;
 
+var killRobot = false;
+
 function create(){
   game.physics.startSystem(Phaser.Physics.ARCADE);
   game.add.sprite(0, 0, 'mars');
@@ -39,6 +41,7 @@ function create(){
   walkRight = game.input.keyboard.addKey(Phaser.Keyboard.D);
   walkLeft = game.input.keyboard.addKey(Phaser.Keyboard.A);
   walkDown = game.input.keyboard.addKey(Phaser.Keyboard.S);
+  gameStart = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
   player = game.add.sprite(32, game.world.height - 64, 'robot');
   player.health = playerMaxHealth;
@@ -65,10 +68,12 @@ function create(){
   lasers.setAll('outOfBoundsKill', true);
 
   scoreText = game.add.text(32, 550, 'score: 0', {font:"20px Arial", fill: "#ffffff", align: 'left'});
-  introText = game.add.text(100, 100, 'WTF ZOMBIES?!?!?!', {font:"20px Arial", fill: "#ffffff", align: "left"});
+  introText = game.add.text(100, 100, 'Press Space to defend the homestead!', {font:"20px Arial", fill: "#ffffff", align: "left"});
   healthText = game.add.text(200, 50, 'health: 100', {font:"20px Arial", fill: "#ffffff", align: "left"})
 
   introText.anchor.setTo(0.5, 0.5);
+
+  gameStart.onDown.add(zombieChase, this);
 
 }
 
@@ -95,13 +100,16 @@ function update() {
     player.animations.stop();
   }
 
+  if (killRobot == true){
+    game.physics.arcade.moveToObject(smallEnemy, player, 100);
+  }
+
 
   if (game.input.activePointer.isDown){
     fire();
   }
 
   //causes enemy to chase player;
-  game.physics.arcade.moveToObject(smallEnemy, player, 100);
 }
 
 function fire(){
@@ -122,9 +130,9 @@ function damage(attack, target){
   if (target.health < 1){
     target.kill();
     introText.text = 'YOU LOSE!';
+    introText.visible = true;
   } else {
     target.health -= attack.damage;
-    introText.visible = true;
     healthText.text = 'health: ' + target.health.toFixed(1);
   }
 }
@@ -136,5 +144,12 @@ function pewPew(enemy, attack){
     enemy.kill();
     score += 1;
     scoreText.text = 'score: ' + score;
+  }
+}
+
+function zombieChase(){
+  if (introText.visible == true){
+    killRobot = true;
+    introText.visible = false;
   }
 }
