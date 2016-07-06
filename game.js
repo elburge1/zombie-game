@@ -100,6 +100,7 @@ function update() {
   //allows player and enemy to collide
   game.physics.arcade.collide(player, zombies);
   game.physics.arcade.collide(lasers, zombies);
+  game.physics.arcade.collide(zombies, zombies);
   // zombie.body.velocity.x = 0;
   // zombie.body.velocity.y = 0;
   player.body.velocity.x = 0;
