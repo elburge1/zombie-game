@@ -20,7 +20,7 @@ var laserDamage = 4;
 
 var smallEnemy;
 var smallEnemyMaxHealth = 10;
-var smallEnemyDamage = 1;
+var smallEnemyDamage = 0.01;
 
 var zombies;
 var zombie;
@@ -88,7 +88,6 @@ function create(){
       zombie.health = smallEnemyMaxHealth;
       zombie.damage = smallEnemyDamage;
       aliveZombies.push(zombie);
-      console.log(aliveZombies.length);
     }
   }
 
@@ -97,7 +96,7 @@ function create(){
 }
 
 function update() {
-  game.physics.arcade.overlap(zombie, player, damage, null, this);
+  game.physics.arcade.overlap(zombies, player, damage, null, this);
   game.physics.arcade.overlap(zombies, lasers, pewPew, null, this);
 
   //allows player and enemy to collide
@@ -148,7 +147,7 @@ function fire(){
 }
 
 //collision handler for loss of health
-function damage(attack, target){
+function damage(target, attack){
   if (target.health < 1){
     target.kill();
     introText.text = 'YOU LOSE! Click to play again!';
@@ -169,7 +168,6 @@ function pewPew(enemy, attack){
     score += 1;
     scoreText.text = 'score: ' + score;
     aliveZombies.length -= 1;
-    console.log(aliveZombies.length)
     if (aliveZombies.length == 0){
       introText.text = 'YOU WIN! Click to play again!';
       introText.visible = true;
