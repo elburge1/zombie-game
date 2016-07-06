@@ -50,10 +50,6 @@ function create(){
   player.health = playerMaxHealth;
   player.anchor.set(0.5);
 
-  // smallEnemy = game.add.sprite(400, game.world.height - 64, 'zombie');
-  // smallEnemy.damage = smallEnemyDamage;
-  // smallEnemy.health = smallEnemyMaxHealth;
-
   game.physics.arcade.enable(player);
 
   zombies = game.add.group();
@@ -84,10 +80,12 @@ function create(){
     for (var i = 0; i < 4; i++){
       zombie = zombies.create(i * 100, i * 100, 'zombie')
       zombie.enableBody = true;
+      zombie.physicsBodyType = Phaser.Physics.ARCADE;
       zombie.body.velocity.x = 0;
       zombie.body.velocity.y = 0;
-      zombie.damage = smallEnemyDamage;
+      zombie.body.collideWorldBounds = true;
       zombie.health = smallEnemyMaxHealth;
+      zombie.damage = smallEnemyDamage;
     }
   }
 
@@ -118,9 +116,10 @@ function update() {
     player.animations.stop();
   }
 
-  //causes zombies to chase player
   if (killRobot == true){
-    game.physics.arcade.moveToObject(zombie, player, 100);
+    zombies.forEachAlive(function(zombie){
+      game.physics.arcade.moveToObject(zombie, player, 100);
+    })
   }
 
 
