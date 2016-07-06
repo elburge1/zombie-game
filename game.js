@@ -24,6 +24,7 @@ var smallEnemyDamage = 1;
 
 var zombies;
 var zombie;
+var aliveZombies = [];
 
 var platforms;
 
@@ -86,6 +87,8 @@ function create(){
       zombie.body.collideWorldBounds = true;
       zombie.health = smallEnemyMaxHealth;
       zombie.damage = smallEnemyDamage;
+      aliveZombies.push(zombie);
+      console.log(aliveZombies.length);
     }
   }
 
@@ -94,7 +97,7 @@ function create(){
 }
 
 function update() {
-  game.physics.arcade.overlap(zombies, player, damage, null, this);
+  game.physics.arcade.overlap(zombie, player, damage, null, this);
   game.physics.arcade.overlap(zombies, lasers, pewPew, null, this);
 
   //allows player and enemy to collide
@@ -165,6 +168,13 @@ function pewPew(enemy, attack){
     enemy.kill();
     score += 1;
     scoreText.text = 'score: ' + score;
+    aliveZombies.length -= 1;
+    console.log(aliveZombies.length)
+    if (aliveZombies.length == 0){
+      introText.text = 'YOU WIN! Click to play again!';
+      introText.visible = true;
+      game.input.onTap.addOnce(restart, this);
+    }
   }
 }
 
