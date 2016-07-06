@@ -22,6 +22,9 @@ var smallEnemy;
 var smallEnemyMaxHealth = 10;
 var smallEnemyDamage = 1;
 
+var zombies;
+var zombie;
+
 var platforms;
 
 var lasers;
@@ -47,15 +50,17 @@ function create(){
   player.health = playerMaxHealth;
   player.anchor.set(0.5);
 
-  smallEnemy = game.add.sprite(400, game.world.height - 64, 'zombie');
-  smallEnemy.damage = smallEnemyDamage;
-  smallEnemy.health = smallEnemyMaxHealth;
+  // smallEnemy = game.add.sprite(400, game.world.height - 64, 'zombie');
+  // smallEnemy.damage = smallEnemyDamage;
+  // smallEnemy.health = smallEnemyMaxHealth;
 
   game.physics.arcade.enable(player);
-  game.physics.arcade.enable(smallEnemy);
+
+  zombies = game.add.group();
+  zombies.enableBody = true;
+  zombies.physicsBodyType = Phaser.Physics.ARCADE;
+
   player.body.collideWorldBounds = true;
-  smallEnemy.body.collideWorldBounds = true;
-  player.body.allowRotation = false;
   cursors = game.input.keyboard.createCursorKeys();
 
   lasers = game.add.group();
@@ -75,17 +80,30 @@ function create(){
 
   gameStart.onDown.add(zombieChase, this);
 
+  function createZombies(){
+    for (var i = 0; i < 4; i++){
+      zombie = zombies.create(i * 100, i * 100, 'zombie')
+      zombie.enableBody = true;
+      zombie.body.velocity.x = 0;
+      zombie.body.velocity.y = 0;
+      zombie.damage = smallEnemyDamage;
+      zombie.health = smallEnemyMaxHealth;
+    }
+  }
+
+  createZombies();
+
 }
 
 function update() {
-  game.physics.arcade.overlap(smallEnemy, player, damage, null, this);
-  game.physics.arcade.overlap(smallEnemy, lasers, pewPew, null, this);
+  game.physics.arcade.overlap(zombies, player, damage, null, this);
+  game.physics.arcade.overlap(zombies, lasers, pewPew, null, this);
 
   //allows player and enemy to collide
-  game.physics.arcade.collide(player, smallEnemy);
-  game.physics.arcade.collide(lasers, smallEnemy);
-  smallEnemy.body.velocity.x = 0;
-  smallEnemy.body.velocity.y = 0;
+  game.physics.arcade.collide(player, zombies);
+  game.physics.arcade.collide(lasers, zombies);
+  // zombie.body.velocity.x = 0;
+  // zombie.body.velocity.y = 0;
   player.body.velocity.x = 0;
   player.body.velocity.y = 0;
   if (walkLeft.isDown){
@@ -100,8 +118,9 @@ function update() {
     player.animations.stop();
   }
 
+  //causes zombies to chase player
   if (killRobot == true){
-    game.physics.arcade.moveToObject(smallEnemy, player, 100);
+    game.physics.arcade.moveToObject(zombie, player, 100);
   }
 
 
@@ -109,7 +128,6 @@ function update() {
     fire();
   }
 
-  //causes enemy to chase player
 }
 
 //weapon firing function
