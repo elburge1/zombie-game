@@ -20,7 +20,7 @@ var laserDamage = 4;
 
 var smallEnemy;
 var smallEnemyMaxHealth = 10;
-var smallEnemyDamage = 0.01;
+var smallEnemyDamage = 0.05;
 
 var zombies;
 var zombie;
@@ -30,6 +30,7 @@ var platforms;
 
 var lasers;
 
+var level = 1;
 var score = 0;
 var scoreText;
 var introText;
@@ -80,8 +81,12 @@ function create(){
   gameStart.onDown.add(zombieChase, this);
 
   function createZombies(){
-    for (var i = 0; i < 4; i++){
-      zombie = zombies.create(i * 100, i * 100, 'zombie')
+    var x;
+    var y;
+    for (var i = 0; i < level + 5; i++){
+      x = game.rnd.integerInRange(50, 600);
+      y = game.rnd.integerInRange(50, 400);
+      zombie = zombies.create(x, y, 'zombie')
       zombie.enableBody = true;
       zombie.physicsBodyType = Phaser.Physics.ARCADE;
       zombie.body.velocity.x = 0;
@@ -125,7 +130,7 @@ function update() {
 
   if (killRobot == true){
     zombies.forEachAlive(function(zombie){
-      game.physics.arcade.moveToObject(zombie, player, 100);
+      game.physics.arcade.moveToObject(zombie, player, 150);
     })
   }
 
@@ -173,6 +178,7 @@ function pewPew(enemy, attack){
     scoreText.text = 'score: ' + score;
     aliveZombies.length -= 1;
     if (aliveZombies.length == 0){
+      level += 1;
       introText.text = 'YOU WIN! Click to play again!';
       introText.visible = true;
       game.input.onTap.addOnce(restart, this);
@@ -192,5 +198,7 @@ function zombieChase(){
 function restart(){
   killRobot = false;
   score = 0;
+  level = 1;
+  health = 100;
   create();
 }
