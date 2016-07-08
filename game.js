@@ -107,16 +107,18 @@ function update() {
   // zombie.body.velocity.y = 0;
   player.body.velocity.x = 0;
   player.body.velocity.y = 0;
-  if (walkLeft.isDown){
-    player.body.velocity.x = -150;
-  } else if (walkRight.isDown){
-    player.body.velocity.x = 150;
-  } else if (walkUp.isDown) {
-    player.body.velocity.y = -150;
-  } else if (walkDown.isDown){
-    player.body.velocity.y = 150;
-  } else {
-    player.animations.stop();
+  if (killRobot == true){
+    if (walkLeft.isDown){
+      player.body.velocity.x = -150;
+    } else if (walkRight.isDown){
+      player.body.velocity.x = 150;
+    } else if (walkUp.isDown) {
+      player.body.velocity.y = -150;
+    } else if (walkDown.isDown){
+      player.body.velocity.y = 150;
+    } else {
+      player.animations.stop();
+    }
   }
 
   if (killRobot == true){
@@ -125,11 +127,11 @@ function update() {
     })
   }
 
-
-  if (game.input.activePointer.isDown){
-    fire();
+  if (killRobot == true) {
+    if (game.input.activePointer.isDown){
+      fire();
+    }
   }
-
 }
 
 //weapon firing function
