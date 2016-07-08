@@ -71,9 +71,10 @@ function create(){
   lasers.setAll('checkWorldBounds', true);
   lasers.setAll('outOfBoundsKill', true);
 
-  scoreText = game.add.text(32, 550, 'score: ' + score, {font:"20px Arial", fill: "#ffffff", align: 'left'});
+  scoreText = game.add.text(32, 550, 'Score: ' + score, {font:"20px Arial", fill: "#ffffff", align: 'left'});
+  levelText = game.add.text(32, 500, 'Level: ' + level, {font:"20px Arial", fill: "#ffffff", align: 'left'});
   introText = game.add.text(400, 100, 'Press Space to defend the homestead!', {font:"20px Arial", fill: "#ffffff", align: "center"});
-  healthText = game.add.text(32, 50, 'health: ' + player.health, {font:"20px Arial", fill: "#ffffff", align: "left"})
+  healthText = game.add.text(32, 50, 'Health: ' + player.health, {font:"20px Arial", fill: "#ffffff", align: "left"})
   instructions = game.add.text(200, 50, 'W, A, S, D keys to move, point and click to shoot!', {font:"20px Arial", fill: "#ffffff", align: "center"});
 
   introText.anchor.setTo(0.5, 0.5);
@@ -164,7 +165,7 @@ function damage(target, attack){
     game.input.onTap.addOnce(restart, this);
   } else {
     target.health -= attack.damage;
-    healthText.text = 'health: ' + target.health.toFixed(1);
+    healthText.text = 'Health: ' + target.health.toFixed(1);
   }
 }
 
@@ -175,7 +176,7 @@ function pewPew(enemy, attack){
   if (enemy.health < 1){
     enemy.kill();
     score += 1;
-    scoreText.text = 'score: ' + score;
+    scoreText.text = 'Score: ' + score;
     aliveZombies.length -= 1;
     if (aliveZombies.length == 0){
       level += 1;
@@ -186,6 +187,7 @@ function pewPew(enemy, attack){
       } else {
         this.createZombies();
         killRobot = false;
+        levelText.text = 'Level: ' + level;
         introText.text = 'GET READY FOR THE NEXT LEVEL! Press space to start!'
         introText.visible = true;
       }
