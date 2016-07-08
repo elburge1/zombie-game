@@ -34,6 +34,7 @@ var score = 0;
 var scoreText;
 var introText;
 var healthText;
+var instructions;
 
 var killRobot = false;
 
@@ -69,9 +70,10 @@ function create(){
   lasers.setAll('checkWorldBounds', true);
   lasers.setAll('outOfBoundsKill', true);
 
-  scoreText = game.add.text(32, 550, 'score: 0', {font:"20px Arial", fill: "#ffffff", align: 'left'});
+  scoreText = game.add.text(32, 550, 'score: ' + score, {font:"20px Arial", fill: "#ffffff", align: 'left'});
   introText = game.add.text(400, 100, 'Press Space to defend the homestead!', {font:"20px Arial", fill: "#ffffff", align: "center"});
   healthText = game.add.text(32, 50, 'health: 100', {font:"20px Arial", fill: "#ffffff", align: "left"})
+  instructions = game.add.text(200, 50, 'W, A, S, D keys to move, point and click to shoot!', {font:"20px Arial", fill: "#ffffff", align: "center"});
 
   introText.anchor.setTo(0.5, 0.5);
 
@@ -183,6 +185,7 @@ function zombieChase(){
   if (introText.visible == true){
     killRobot = true;
     introText.visible = false;
+    instructions.visible = false;
   }
 }
 
