@@ -73,14 +73,14 @@ function create(){
 
   scoreText = game.add.text(32, 550, 'score: ' + score, {font:"20px Arial", fill: "#ffffff", align: 'left'});
   introText = game.add.text(400, 100, 'Press Space to defend the homestead!', {font:"20px Arial", fill: "#ffffff", align: "center"});
-  healthText = game.add.text(32, 50, 'health: 100', {font:"20px Arial", fill: "#ffffff", align: "left"})
+  healthText = game.add.text(32, 50, 'health: ' + player.health, {font:"20px Arial", fill: "#ffffff", align: "left"})
   instructions = game.add.text(200, 50, 'W, A, S, D keys to move, point and click to shoot!', {font:"20px Arial", fill: "#ffffff", align: "center"});
 
   introText.anchor.setTo(0.5, 0.5);
 
   gameStart.onDown.add(zombieChase, this);
 
-  function createZombies(){
+  this.createZombies = function createZombies(){
     var x;
     var y;
     for (var i = 0; i < level + 5; i++){
@@ -98,7 +98,7 @@ function create(){
     }
   }
 
-  createZombies();
+  this.createZombies();
 
 }
 
@@ -179,9 +179,16 @@ function pewPew(enemy, attack){
     aliveZombies.length -= 1;
     if (aliveZombies.length == 0){
       level += 1;
-      introText.text = 'YOU WIN! Click to play again!';
-      introText.visible = true;
-      game.input.onTap.addOnce(restart, this);
+      if (level == 6){
+        introText.text = 'YOU WIN! Click to play again!';
+        introText.visible = true;
+        game.input.onTap.addOnce(restart, this);
+      } else {
+        this.createZombies();
+        killRobot = false;
+        introText.text = 'GET READY FOR THE NEXT LEVEL! Press space to start!'
+        introText.visible = true;
+      }
     }
   }
 }
@@ -200,5 +207,9 @@ function restart(){
   score = 0;
   level = 1;
   health = 100;
+  zombies.forEachAlive(function(zombie){
+    zombie.kill();
+  });
+  aliveZombies.length = 0;
   create();
 }
