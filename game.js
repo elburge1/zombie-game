@@ -186,5 +186,6 @@ function zombieChase(){
 
 function restart(){
   killRobot = false;
+  score = 0;
   create();
 }
