@@ -20,7 +20,7 @@ var laserDamage = 4;
 
 var smallEnemy;
 var smallEnemyMaxHealth = 10;
-var smallEnemyDamage = 0.05;
+var smallEnemyDamage = 0.07;
 
 var zombies;
 var zombie;
@@ -131,7 +131,11 @@ function update() {
 
   if (killRobot == true){
     zombies.forEachAlive(function(zombie){
-      game.physics.arcade.moveToObject(zombie, player, 150);
+      if (zombie.health < 6){
+        game.physics.arcade.moveToObject(zombie, player, 160);
+      } else {
+        game.physics.arcade.moveToObject(zombie, player, 110);
+      }
     })
   }
 
@@ -164,8 +168,10 @@ function damage(target, attack){
     introText.visible = true;
     game.input.onTap.addOnce(restart, this);
   } else {
-    target.health -= attack.damage;
-    healthText.text = 'Health: ' + target.health.toFixed(1);
+    if (killRobot == true){
+      target.health -= attack.damage;
+      healthText.text = 'Health: ' + target.health.toFixed(1);
+    }
   }
 }
 
@@ -197,7 +203,7 @@ function pewPew(enemy, attack){
 
 //game-start function
 function zombieChase(){
-  if (introText.visible == true){
+  if (introText.visible == true && killRobot == false){
     killRobot = true;
     introText.visible = false;
     instructions.visible = false;
